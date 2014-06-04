@@ -1,0 +1,4 @@
+EventGhost
+==========
+
+EventGhost Plugin(s)
