@@ -103,12 +103,12 @@ class PansonicTV(eg.PluginBase):
         
         i += 1
         labelPort = wx.StaticText(panel, label="TCP Port (Default: 55000)", pos=(x_start, y_start + label_padding + (i * y_padding)))
-        self.spin = wx.SpinCtrl(panel, -1, "", (x_start + (x_padding * 2), y_start + (i * y_padding)), (80, -1))
-        self.spin.SetRange(1,65535)
-        self.spin.SetValue(int(port))
+        spinPort = wx.SpinCtrl(panel, -1, "", (x_start + (x_padding * 2), y_start + (i * y_padding)), (80, -1))
+        spinPort.SetRange(1,65535)
+        spinPort.SetValue(int(port))
 
         while panel.Affirmed():
-            panel.SetResult(textControlIpAddress.GetValue(), textControlPort.GetValue())
+            panel.SetResult(textControlIpAddress.GetValue(), spinPort.GetValue())
   
 class ActionBase(eg.ActionClass):
     
