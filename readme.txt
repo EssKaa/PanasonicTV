@@ -38,7 +38,8 @@ Check https://github.com/EssKaa/PanasonicTV/wiki/Compatibility for the most rece
 It should work with most Panasonic TVs, if you don't find your model on the list give it a try.
 The following devices were TESTED:
 
-TX-P50VT30e
+TX-P50VT30E
+TX-P55ST50Y
 
 Known issues
 ============
