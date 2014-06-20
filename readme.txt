@@ -41,6 +41,21 @@ The following devices were TESTED:
 TX-P50VT30E
 TX-P55ST50Y
 
+Version history
+===============
+
+1.2     Added direct input keys for:
+        HDMI1
+        HDMI2
+        HDMI3
+        HDMI4
+        AV1
+        AV2
+
+1.1     Fixed settings dialog
+
+1.0     Initial release
+
 Known issues
 ============
 
