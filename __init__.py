@@ -11,6 +11,13 @@ REMOTE_COMMANDS = {
   'Mute': 'MUTE',
   'TV': 'TV',
   'AV': 'CHG_INPUT',
+  'HDMI1': 'HDMI1',
+  'HDMI2': 'HDMI2',
+  'HDMI3': 'HDMI3',
+  'HDMI4': 'HDMI4',
+  'AV1': 'AV1',
+  'AV2': 'AV2',
+  'Component': 'VIDEO1',
   'Red': 'RED',
   'Green': 'GREEN',
   'Yellow': 'YELLOW',
@@ -63,7 +70,7 @@ REMOTE_COMMANDS = {
 eg.RegisterPlugin(
     name = "Panasonic VIERA TV",
     author = "EssKaa & Jingo",
-    version = "1.1",
+    version = "1.2",
     kind = "external",
     # We don't auto load macros because they are not configured yet.
     createMacrosOnAdd = False,
