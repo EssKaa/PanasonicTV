@@ -70,7 +70,7 @@ REMOTE_COMMANDS = {
 eg.RegisterPlugin(
     name = "Panasonic VIERA TV",
     author = "EssKaa & Jingo",
-    version = "1.2",
+    version = "1.3",
     kind = "external",
     # We don't auto load macros because they are not configured yet.
     createMacrosOnAdd = False,
@@ -89,10 +89,15 @@ class PansonicTV(eg.PluginBase):
         self.AddAction(SetVolume, clsName="Set Volume", description="Sets volume to x")
         self.AddAction(SetMuteOn, clsName="Mute On", description="Mute TV")
         self.AddAction(SetMuteOff, clsName="Mute Off", description="Unmute TV")
+        self.AddAction(SmartMuteOff, clsName="SmartMute Off", description="Sets previous volume")
+        self.AddAction(SmartMuteOn, clsName="SmartMute On", description="Sets volume to 0 (no mute symbol displayed)")
+        self.AddAction(SmartMuteToggle, clsName="SmartMute Toggle", description="Toggles SmartMute")
         
     def __start__(self, ip_address="", port=""):
         eg.globals.VieraRendCtrlUrl = "http://%s:%s/dmr/control_0" % (ip_address, port)
         eg.globals.VieraNetCtrlUrl = "http://%s:%s/nrc/control_0" % (ip_address, port)
+        eg.globals.VieraSmartMuted = False
+        eg.globals.VieraSmartMuteLastVolume = 20
 
         
     def Configure(self, ip_address="192.168.11.20", port="55000"):
@@ -233,14 +238,49 @@ class SetVolume(ActionBase):
             panel.SetResult(volLevel)
             
 class SetMuteOn(ActionBase):
-    def __call__(self, value):
+    def __call__(self):
         return self.runCmdRend(method="Set", command="Mute", value="1")
     
 class SetMuteOff(ActionBase):
     def __call__(self, value):
         return self.runCmdRend(method="Set", command="Mute", value="0")
 
-            
+class SmartMuteOff(ActionBase):
+    def __call__(self):
+        if self.runCmdRend(method="Get", command="Volume") == "0":
+            if eg.globals.VieraSmartMuteLastVolume:
+                self.runCmdRend(method="Set", command="Volume", value=eg.globals.VieraSmartMuteLastVolume)
+        return
+
+class SmartMuteOn(ActionBase):
+    def __call__(self):
+        currentVolume = self.runCmdRend(method="Get", command="Volume")
+        if currentVolume != "0":
+            eg.globals.VieraSmartMuteLastVolume = currentVolume
+            self.runCmdRend(method="Set", command="Volume", value="0")
+            if self.runCmdRend(method="Get", command="Volume") != "0":
+                # Fix needed
+                self.runCmdRend(method="Set", command="Volume", value="1")
+                self.runCmdRend(method="Set", command="Volume", value="0")
+        return
+
+class SmartMuteToggle(ActionBase):
+    def __call__(self):
+        currentVolume = self.runCmdRend(method="Get", command="Volume")
+        if currentVolume == "0":
+            try:
+                self.runCmdRend(method="Set", command="Volume", value=eg.globals.VieraSmartMuteLastVolume)
+            except:
+                self.runCmdRend(method="Set", command="Volume", value="15")
+        else:
+            eg.globals.VieraSmartMuteLastVolume = currentVolume
+            self.runCmdRend(method="Set", command="Volume", value="0")
+            if self.runCmdRend(method="Get", command="Volume") != "0":
+                # Fix needed
+                self.runCmdRend(method="Set", command="Volume", value="1")
+                self.runCmdRend(method="Set", command="Volume", value="0")
+        return
+
 class SendKey(ActionBase):
     def __call__(self, irCmd=None):
         
