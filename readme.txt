@@ -44,6 +44,9 @@ TX-P55ST50Y
 Version history
 ===============
 
+1.3     fixed Set Mute on / off
+        added Smart Mute functionality
+
 1.2     Added direct input keys for:
         HDMI1
         HDMI2
