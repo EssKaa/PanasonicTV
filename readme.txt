@@ -40,6 +40,7 @@ The following devices were TESTED:
 
 TX-P50VT30E
 TX-P55ST50Y
+TC-L55ET5
 
 Version history
 ===============
